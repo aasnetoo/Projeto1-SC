@@ -12,10 +12,8 @@ public class Main {
             Product.verifyStock();
             ProductController productController = new ProductController();
             productController.menu();
-        } catch (IOException e) {
+        }catch (InputMismatchException | IOException e){
             System.err.println("Erro: " + e.getMessage());
-        } catch (InputMismatchException e){
-
         }
 
 

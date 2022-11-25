@@ -1,1 +1,4 @@
-ovo,1,4
+peixe,35,5
+kiwi,19,10
+laranja,35,45
+laranja,10,4

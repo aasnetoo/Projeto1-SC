@@ -16,6 +16,8 @@ public class Product{
     public static List<Map<String, Object>> productsStock = new ArrayList<>();
     final private static Path pathOfFile = Paths.get("productsStock.txt");
 
+
+
     public static void verifyStock() throws IOException {
         if (Files.exists(pathOfFile)) {
             Stream<String> stream = Files.lines(pathOfFile, StandardCharsets.UTF_8);

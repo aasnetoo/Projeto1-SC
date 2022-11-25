@@ -33,8 +33,32 @@ public class ProductController {
 
     private void createProduct() {
         while(true){
+            boolean existProduct = false;
             Map<String, Object> product = view.getProductInformation();
-            Product.productsStock.add(product);
+            for (int i = 0; i < Product.productsStock.size(); i++) {
+                var A = Product.productsStock.get(i).get("nome").toString();
+                var B = product.get("nome").toString();
+                if (A.equalsIgnoreCase(B)){
+                    System.err.println("Produto existente. Deseja continuar e somar os valores? 's' para continuar");
+                    var a = view.answer();
+                    if (!a.equalsIgnoreCase("s")){
+                        existProduct = true;
+                        continue;
+                    }
+                    Integer stockQuantity = Integer.parseInt(Product.productsStock.get(i).get("quantidade").toString());
+                    Integer newQuantity = Integer.parseInt(product.get("quantidade").toString());
+
+                    Product.productsStock.get(i).put("quantidade",stockQuantity+ newQuantity);
+                    Product.productsStock.get(i).put("valor",product.get("valor"));
+                    existProduct = true;
+
+                }
+
+            }
+            if(!existProduct) {
+                Product.productsStock.add(product);
+            }
+
 
             System.out.println("Continuar adicionando produtos? ");
             if(!view.answer().equals("s")) break;
@@ -78,10 +102,14 @@ public class ProductController {
     private void sellProducts() {
         boolean continueLoop = true;
         List<Map<String, Object>> cart = new ArrayList<>();
+        List<Integer> teste = new ArrayList<>();
         while(continueLoop){
+            Product product = new Product();
             view.listProducts();
             String[] selectedProduct = view.sellProducts().split(",");
+            var quantityItem = Integer.parseInt(selectedProduct[1]);
             Map<String, Object> productInStock = Product.productsStock.get(Integer.parseInt(selectedProduct[0]) - 1);
+
             // Verificando se o estoque for igual a zero ou menor que o valor pedido
             if(         Integer.parseInt(productInStock.get("quantidade").toString().trim()) == 0
                     ||  Integer.parseInt(productInStock.get("quantidade").toString().trim()) < Integer.parseInt(selectedProduct[1])
@@ -92,20 +120,27 @@ public class ProductController {
             }
 
             // Inserido no Map a quantidade desejada na compra
-         //   productInStock.put("quantidade", (Integer.parseInt(selectedProduct[1])));
+//            productForCart.put("quantidade", quantityItem);
             // Adicionado o produto a lista do carrinho
             cart.add(productInStock);
+            teste.add(quantityItem);
 
             // Método para atualizar a quantidade de itens no estoque
-            updateStock(productInStock, selectedProduct);
+            updateStock(productInStock, (quantityItem));
 
             String answer = view.newPurchase();
             if(answer.equals("n")) continueLoop = false;
         }
-        view.listFilteredProducts(cart);
+        double soma = 0;
+        System.out.println("Produtos no carrinho: ");
+        for (int i = 0; i < cart.size(); i++) {
+            System.out.println("Nome: "+cart.get(i).get("nome")+"- Quantidade: "+teste.get(i)+" - Valor: R$ "+cart.get(i).get("valor"));
+            soma += Double.parseDouble(cart.get(i).get("valor").toString())*teste.get(i);
+        }
+        System.out.println("Valor total do carrinho: R$ "+soma);
     }
 
-    private void updateStock(Map<String, Object> productInStock, String[] selectedProduct) {
+    private void updateStock(Map<String, Object> productInStock, Integer quantityItem) {
         // Map para encontrar o produto a ser atualizado o estoque
         int cont = 0;
         for (int i = 0; i < Product.productsStock.size(); i++) {
@@ -118,7 +153,7 @@ public class ProductController {
             // Calculo do novo estoque onde é pego o estoque do arquivo menos o estoque da compra efetuada
 
             Integer a =  Integer.parseInt(product.get("quantidade").toString());
-            Integer b = Integer.parseInt(selectedProduct[1]);
+            Integer b = quantityItem;
 
             Integer newStock = (a - b);
             // Ao encontrar o produto correto atualizar a quantidade no arquivo
@@ -126,9 +161,12 @@ public class ProductController {
                 Product.productsStock.remove(i);
             }
 
+
+
+
             if(name.toLowerCase().equals(searchProduct)){
-                String newStocks = Integer.toString(newStock);
-                product.put("quantidade", newStocks);
+                String teste = Integer.toString(newStock);
+                product.put(("quantidade"), teste);
             }
         }
         Product.saveStock();
