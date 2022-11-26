@@ -2,7 +2,6 @@ package view;
 
 import model.Product;
 
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,14 +58,16 @@ public class ProductView {
     }
 
     public String editProduct(){
-        System.out.println("Você deseja editar qual produto? Escolha o produto pelo índice ou digite '0' para voltar ao menu.");
+        System.out.println(Messages.messageQuestionEditProduct);
         listProducts();
+        System.out.print(Messages.messageInputLine);
         return answer();
     }
 
     public String removeProduct() {
-        System.out.println("Você deseja remover qual produto? Escolha o produto pelo índice ou digite '0' para voltar ao menu.");
+        System.out.println(Messages.messageQuestionRemoveProduct);
         listProducts();
+        System.out.print(Messages.messageInputLine);
         String option = answer();
         char optionVerification = option.charAt(0);
         if (Character.isAlphabetic(optionVerification)){
@@ -103,8 +104,9 @@ public class ProductView {
         return scan.nextLine().toLowerCase();
     }
 
-    public String sellProducts() {
-        System.out.println("O que deseja comprar? Escolha o produto pelo índice. ");
+    public String buyProducts() {
+        System.out.println(Messages.messageQuestionBuyProduct);
+        System.out.print(Messages.messageInputLine);
         String option = answer();
         boolean testValue = true;
         while(testValue) {
@@ -118,6 +120,7 @@ public class ProductView {
         }
         String quantity;
         System.out.println("Qual a quantidade? Digite um número.");
+        System.out.print(Messages.messageInputLine);
         quantity = answer();
         boolean quantityValue = true;
         while(quantityValue) {
@@ -151,13 +154,33 @@ public class ProductView {
         System.out.println(Messages.messageEndTable);
     }
 
+    public static void closedCart(List<Map<String, Object>> cart, List<Integer> teste) {
+        double soma = 0;
+        System.out.print(Messages.messageClosedCart);
+        for (int i = 0; i < cart.size(); i++) {
+
+            String stringNameProduct = cart.get(i).get("nome").toString();
+
+            // Deixar o nome do produto com a primeira letra maíuscula e restante minúsculo
+            String nameCapitalized = stringNameProduct.substring(0,1).toUpperCase() + stringNameProduct.substring(1).toLowerCase();
+            String quantity = teste.get(i).toString();
+            Float price = Float.parseFloat(cart.get(i).get("valor").toString());
+
+            System.out.printf(Messages.messageTableProduct, i+1, nameCapitalized, quantity, price);
+            soma += Double.parseDouble(cart.get(i).get("valor").toString())* teste.get(i);
+        }
+        System.out.printf(Messages.messageTotalValueCart, soma);
+    }
+
     public String insufficientStock(Map<String, Object> productInStock) {
-        System.err.printf(Messages.messageProductExists, productInStock.get("quantidade"));
+        System.err.printf(Messages.messageInsufficientStock, productInStock.get("quantidade"));
+        System.out.print(Messages.messageInputLine);
         return answer();
     }
 
     public String newPurchase() {
-        System.out.println("Deseja algo mais? 's' para sim ou 'n' para não.");
+        System.out.println(Messages.messageNewPurchase);
+        System.out.print(Messages.messageInputLine);
         return answer();
     }
 

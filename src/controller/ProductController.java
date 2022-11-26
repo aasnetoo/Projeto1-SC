@@ -93,7 +93,7 @@ public class ProductController {
         if (Integer.parseInt(option) != 0){
             Product.productsStock.remove(Integer.parseInt(option) - 1);
             System.out.println("Produto removido com sucesso!");
-            System.out.println("Voltando ao menu...");
+            System.out.println("Voltando ao menu.");
         }
     }
 
@@ -125,7 +125,7 @@ public class ProductController {
         while(continueLoop){
             Product product = new Product();
             view.listProducts();
-            String[] selectedProduct = view.sellProducts().split(",");
+            String[] selectedProduct = view.buyProducts().split(",");
             var quantityItem = Integer.parseInt(selectedProduct[1]);
             if(Integer.parseInt(selectedProduct[0])>Product.productsStock.size() || Integer.parseInt(selectedProduct[0])<=0){
                 System.err.println("Valor inválido. Tente novamente.");
@@ -159,19 +159,11 @@ public class ProductController {
             // Método para atualizar a quantidade de itens no estoque
             updateStock(productInStock, (quantityItem));
         }
-        double soma = 0;
-        System.out.println("-------------------------");
-        System.out.println("Compra finalizada");
-        System.out.println("-------------------------");
-        System.out.println("Produtos no carrinho: ");
-        for (int i = 0; i < cart.size(); i++) {
-            System.out.println("Nome: "+cart.get(i).get("nome")+"- Quantidade: "+teste.get(i)+" - Valor: R$ "+cart.get(i).get("valor"));
-            soma += Double.parseDouble(cart.get(i).get("valor").toString())*teste.get(i);
-        }
-        System.out.println("Valor total do carrinho: R$ "+soma);
-        System.out.println();
+        view.closedCart(cart, teste);
 
     }
+
+
 
     private void updateStock(Map<String, Object> productInStock, Integer quantityItem) {
         // Map para encontrar o produto a ser atualizado o estoque

@@ -1,4 +1,4 @@
-mamao,3,4
-bicicleta,3,2
+bicicleta,1,2
 uva,1,3
 ovo,1,1
+mamao,1,2

@@ -59,16 +59,12 @@ public class Messages {
 
     public static String messageInputLine = "> ";
 
-    public static String messageProductExists = "";
+    public static String messageQuestionEditProduct = "Você deseja editar qual produto? Escolha o produto pelo índice ou digite '0' para voltar ao menu.";
 
-    public static String messageQuestionEditProduct = "";
+    public static String messageQuestionBuyProduct = "O que deseja comprar? Escolha o produto pelo índice. ";
 
-    public static String messageQuestionRemoveProduct = "";
+    public static String messageQuestionRemoveProduct = "Você deseja remover qual produto? Escolha o produto pelo índice ou digite '0' para voltar ao menu.";
 
-    public static String messageNewPurchase = "";
-
-    public static String messageReturnMenu = "";
-
-    public static String messageOptionInvalid = "";
+    public static String messageNewPurchase = "Deseja algo mais? 's' para sim ou 'n' para não.";
 
 }
