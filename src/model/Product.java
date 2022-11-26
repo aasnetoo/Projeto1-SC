@@ -19,6 +19,9 @@ public class Product{
 
 
     public static void verifyStock() throws IOException {
+        if (Files.exists(pathOfFile) && Files.size(pathOfFile)==0){
+            Files.delete(pathOfFile);
+        }
         if (Files.exists(pathOfFile)) {
             Stream<String> stream = Files.lines(pathOfFile, StandardCharsets.UTF_8);
             stream.forEach(stringProduct -> {

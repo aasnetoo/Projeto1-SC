@@ -38,10 +38,36 @@ public class ProductView {
         product.put("nome", scan.nextLine());
         System.out.println("Quantidade do produto: ");
         System.out.print("> ");
-        product.put("quantidade", scan.nextLine());
+        char quantity = scan.next().charAt(0);
+        scan.nextLine();
+        boolean quantityTest = true;
+        while(quantityTest) {
+            if (Character.isAlphabetic(quantity)){
+                System.err.println("Opção inválida. Digite um número.");
+                System.out.print("> ");
+                quantity = scan.next().charAt(0);
+                scan.nextLine();
+            }else{
+                quantityTest = false;
+            }
+        }
+        product.put("quantidade",Character.toString(quantity));
         System.out.println("Valor do produto: ");
         System.out.print("> ");
-        product.put("valor", scan.nextLine());
+        char value = scan.next().charAt(0);
+        scan.nextLine();
+        boolean valueTest = true;
+        while(valueTest) {
+            if (Character.isAlphabetic(value)){
+                System.err.println("Opção inválida. Digite um número.");
+                System.out.print("\n> ");
+                value = scan.next().charAt(0);
+                scan.nextLine();
+            }else{
+                valueTest = false;
+            }
+        }
+        product.put("valor",Character.toString(value));
 
         return product;
     }
@@ -56,9 +82,9 @@ public class ProductView {
         System.out.println("Você deseja remover qual produto? Escolha o produto pelo índice ou digite '0' para voltar ao menu.");
         listProducts();
         String option = answer();
-        char teste = option.charAt(0);
-        if (Character.isAlphabetic(teste)){
-            System.out.println("Opção inválida. Digite um número.");
+        char optionVerification = option.charAt(0);
+        if (Character.isAlphabetic(optionVerification)){
+            System.err.println("Opção inválida. Digite um número.");
             option = "0";
 
         }

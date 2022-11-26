@@ -1,6 +1,5 @@
-peixe,10,5
-kiwi,9,10
-laranja,15,45
-pastel,3,4
-ovo,3,4
-manga,10,4
+manga,0,0
+mamao,3,4
+bicicleta,8,2
+qert,3,3
+uva,1,3
