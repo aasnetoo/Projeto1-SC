@@ -54,7 +54,7 @@ public class Messages {
     public static String messageInsufficientStock = """
                 Produto em estoque insuficiente.
                 Temos quantidade disponível %s a venda.
-                Deseja comprar uma quantidade menor ou outro item? 
+                Deseja comprar uma quantidade menor ou outro item? 's' para sim e 'n' para não 
                 """;
 
     public static String messageInputLine = "> ";

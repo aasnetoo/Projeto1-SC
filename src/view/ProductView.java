@@ -152,11 +152,7 @@ public class ProductView {
     }
 
     public String insufficientStock(Map<String, Object> productInStock) {
-        System.err.printf("""
-                Produto em estoque insuficiente.
-                Temos quantidade disponível %s a venda.
-                Deseja comprar uma quantidade menor ou outro item? 's' para sim e 'n' para não 
-                """, productInStock.get("quantidade"));
+        System.err.printf(Messages.messageProductExists, productInStock.get("quantidade"));
         return answer();
     }
 
