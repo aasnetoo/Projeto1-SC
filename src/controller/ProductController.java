@@ -39,7 +39,7 @@ public class ProductController {
                 var A = Product.productsStock.get(i).get("nome").toString();
                 var B = product.get("nome").toString();
                 if (A.equalsIgnoreCase(B)){
-                    System.err.println("Produto existente. Deseja continuar e somar os valores? 's' para continuar");
+                    System.err.println("Produto existente. Deseja continuar e somar os valores? 's' para continuar ou qualquer outra tecla para não.");
                     var a = view.answer();
                     if (!a.equalsIgnoreCase("s")){
                         existProduct = true;
@@ -79,11 +79,17 @@ public class ProductController {
         } else {
             Map<String, Object> newProduct = view.getProductInformation();
             Product.productsStock.get(Integer.parseInt(option) - 1).putAll(newProduct);
+            System.out.println("Produto editado com sucesso!");
         }
     }
 
     private void removeProduct() {
         String option = view.removeProduct();
+        if (Integer.parseInt(option)>Product.productsStock.size()){
+            System.err.println("Valor inválido");
+            return;
+        }
+
         if (Integer.parseInt(option) != 0){
             Product.productsStock.remove(Integer.parseInt(option) - 1);
             System.out.println("Produto removido com sucesso!");
@@ -121,6 +127,10 @@ public class ProductController {
             view.listProducts();
             String[] selectedProduct = view.sellProducts().split(",");
             var quantityItem = Integer.parseInt(selectedProduct[1]);
+            if(Integer.parseInt(selectedProduct[0])>Product.productsStock.size() || Integer.parseInt(selectedProduct[0])<=0){
+                System.err.println("Valor inválido. Tente novamente.");
+                continue;
+            }
             Map<String, Object> productInStock = Product.productsStock.get(Integer.parseInt(selectedProduct[0]) - 1);
 
             // Verificando se o estoque for igual a zero ou menor que o valor pedido

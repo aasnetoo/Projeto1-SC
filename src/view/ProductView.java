@@ -59,7 +59,7 @@ public class ProductView {
         boolean valueTest = true;
         while(valueTest) {
             if (Character.isAlphabetic(value)){
-                System.err.println("Opção inválida. Digite um número.");
+                System.out.println("Opção inválida. Digite um número.");
                 System.out.print("\n> ");
                 value = scan.next().charAt(0);
                 scan.nextLine();
@@ -124,8 +124,29 @@ xxxxxxxxxxxxxxxxxx Lista de Produtos xxxxxxxxxxxxxxxxxx
     public String sellProducts() {
         System.out.println("O que deseja comprar? Escolha o produto pelo índice. ");
         String option = answer();
+        boolean testValue = true;
+        while(testValue) {
+            if (Integer.parseInt(option) > Product.productsStock.size() || Integer.parseInt(option) <= 0) {
+                System.out.println("Valor inválido. Tente novamente");
+                option = scan.nextLine();
+            } else {
+                testValue = false;
+
+            }
+        }
+        String quantity;
         System.out.println("Qual a quantidade? Digite um número.");
-        option += "," + answer();
+        quantity = answer();
+        boolean quantityValue = true;
+        while(quantityValue) {
+            if (Integer.parseInt(quantity) <= 0) {
+                System.out.println("Valor inválido. Tente novamente");
+                quantity = scan.nextLine();
+            } else {
+                quantityValue = false;
+            }
+        }
+        option += "," + quantity;
 
         return option;
     }
@@ -144,7 +165,7 @@ xxxxxxxxxxxxxxxxxx Lista de Produtos xxxxxxxxxxxxxxxxxx
         System.err.printf("""
                 Produto em estoque insuficiente.
                 Temos quantidade disponível %s a venda.
-                Deseja comprar uma quantidade menor ou outro item? 
+                Deseja comprar uma quantidade menor ou outro item? 's' para sim e 'n' para não 
                 """, productInStock.get("quantidade"));
         return answer();
     }

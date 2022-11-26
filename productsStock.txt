@@ -1,5 +1,4 @@
-manga,0,0
 mamao,3,4
-bicicleta,8,2
-qert,3,3
+bicicleta,3,2
 uva,1,3
+ovo,1,1
