@@ -12,22 +12,8 @@ public class ProductView {
     Scanner scan = new Scanner(System.in);
 
     public String optionMenu(){
-        System.out.println(
-            """
-                            
-                    ------------------------------------------------------
-                    xxxxxxxxxxxxxxxxxxxxxxxx Menú xxxxxxxxxxxxxxxxxxxxxxxx
-                    ------------------------------------------------------
-                            
-                    1 - Criar produto
-                    2 - Editar produto
-                    3 - Remover produto
-                    4 - Listar produtos
-                    5 - Pesquisar produtos
-                    6 - Venda de produtos
-                    0 - Sair do programa
-                        """);
-
+        System.out.print(Messages.messageMenu);
+        System.out.print(Messages.messageInputLine);
         return scan.nextLine();
     }
 
@@ -96,11 +82,7 @@ public class ProductView {
     }
 
     public void listProducts() {
-        System.out.println("""
--------------------------------------------------------
-xxxxxxxxxxxxxxxxxx Lista de Produtos xxxxxxxxxxxxxxxxxx
--------------------------------------------------------
-""");
+        System.out.print(Messages.messageListProduct);
         for (int i = 0; i < Product.productsStock.size(); i++){
             Map<String, Object> product = Product.productsStock.get(i);
             String stringNameProduct = product.get("nome").toString();
@@ -109,10 +91,10 @@ xxxxxxxxxxxxxxxxxx Lista de Produtos xxxxxxxxxxxxxxxxxx
             String nameCapitalized = stringNameProduct.substring(0,1).toUpperCase() + stringNameProduct.substring(1).toLowerCase();
             String quantity = product.get("quantidade").toString();
             Float price = Float.parseFloat(product.get("valor").toString());
-            System.out.printf("%d - %s - Quantidade: %s - Valor: R$ %.2f\n",
+            System.out.printf(Messages.messageTableProduct,
                     (i+1), nameCapitalized , quantity , price);
         }
-        System.out.println();
+        System.out.println(Messages.messageEndTable);
     }
 
     public String searchProduct() {
@@ -152,13 +134,21 @@ xxxxxxxxxxxxxxxxxx Lista de Produtos xxxxxxxxxxxxxxxxxx
     }
 
     public void listFilteredProducts(List<Map<String, Object>> products){
-        System.out.println("Lista de Produtos filtrados: ");
+        System.out.print(Messages.messageFilteredProducts);
         for (int i = 0; i < products.size(); i++){
             Map<String, Object> product = products.get(i);
-            System.out.printf("%d - %s - Quantidade: %s - Valor: R$ %s\n",
-                    (i+1), product.get("nome"), product.get("quantidade"),  product.get("valor"));
+
+            String stringNameProduct = product.get("nome").toString();
+
+            // Deixar o nome do produto com a primeira letra maíuscula e restante minúsculo
+            String nameCapitalized = stringNameProduct.substring(0,1).toUpperCase() + stringNameProduct.substring(1).toLowerCase();
+            String quantity = product.get("quantidade").toString();
+            Float price = Float.parseFloat(product.get("valor").toString());
+
+            System.out.printf(Messages.messageTableProduct,
+                    (i+1), nameCapitalized, quantity,  price);
         }
-        System.out.println();
+        System.out.println(Messages.messageEndTable);
     }
 
     public String insufficientStock(Map<String, Object> productInStock) {
