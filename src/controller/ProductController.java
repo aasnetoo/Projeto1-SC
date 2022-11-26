@@ -60,7 +60,7 @@ public class ProductController {
             }
 
 
-            System.out.println("Continuar adicionando produtos? ");
+            System.out.println("Continuar adicionando produtos? Digite 's' para sim ou qualquer outra tecla para não. ");
             if(!view.answer().equals("s")) break;
         }
         Product.saveStock();
@@ -68,6 +68,11 @@ public class ProductController {
 
     private void editProduct() {
         String option = view.editProduct();
+
+        if(Integer.parseInt(option)>Product.productsStock.size()){
+            System.err.println("Opção inválida.");
+            return;
+        }
 
         if(option.equals("0")){
             System.out.println("Voltando para o menu. ");
@@ -79,7 +84,11 @@ public class ProductController {
 
     private void removeProduct() {
         String option = view.removeProduct();
-        Product.productsStock.remove(Integer.parseInt(option) - 1);
+        if (Integer.parseInt(option) != 0){
+            Product.productsStock.remove(Integer.parseInt(option) - 1);
+            System.out.println("Produto removido com sucesso!");
+            System.out.println("Voltando ao menu...");
+        }
     }
 
     private void listProducts() {
@@ -96,7 +105,11 @@ public class ProductController {
                 filteredProducts.add(product);
             }
         }
-        view.listFilteredProducts(filteredProducts);
+        if(filteredProducts.isEmpty()){
+            System.err.println("Pesquisa não encontrada. ");
+        }else{
+            view.listFilteredProducts(filteredProducts);
+        }
     }
 
     private void sellProducts() {
@@ -125,19 +138,29 @@ public class ProductController {
             cart.add(productInStock);
             teste.add(quantityItem);
 
-            // Método para atualizar a quantidade de itens no estoque
-            updateStock(productInStock, (quantityItem));
 
             String answer = view.newPurchase();
             if(answer.equals("n")) continueLoop = false;
+            else if(answer.equals("s")) continueLoop = true;
+            else{
+                System.out.println("Opção inválida. ");
+                continue;
+            }
+            // Método para atualizar a quantidade de itens no estoque
+            updateStock(productInStock, (quantityItem));
         }
         double soma = 0;
+        System.out.println("-------------------------");
+        System.out.println("Compra finalizada");
+        System.out.println("-------------------------");
         System.out.println("Produtos no carrinho: ");
         for (int i = 0; i < cart.size(); i++) {
             System.out.println("Nome: "+cart.get(i).get("nome")+"- Quantidade: "+teste.get(i)+" - Valor: R$ "+cart.get(i).get("valor"));
             soma += Double.parseDouble(cart.get(i).get("valor").toString())*teste.get(i);
         }
         System.out.println("Valor total do carrinho: R$ "+soma);
+        System.out.println();
+
     }
 
     private void updateStock(Map<String, Object> productInStock, Integer quantityItem) {

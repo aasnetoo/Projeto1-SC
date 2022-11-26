@@ -2,6 +2,7 @@ package view;
 
 import model.Product;
 
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,28 +12,34 @@ public class ProductView {
     Scanner scan = new Scanner(System.in);
 
     public String optionMenu(){
-        System.out.println("""
-            1 - Criar produto
-            2 - Editar produto
-            3 - Remover produto
-            4 - Listar produtos
-            5 - Pesquisar produtos
-            6 - Venda de produtos
-            0 - Sair do programa
-                """);
+        System.out.println(
+            """
+                            
+                    ------------------------------------------------------
+                    xxxxxxxxxxxxxxxxxxxxxxxx Menú xxxxxxxxxxxxxxxxxxxxxxxx
+                    ------------------------------------------------------
+                            
+                    1 - Criar produto
+                    2 - Editar produto
+                    3 - Remover produto
+                    4 - Listar produtos
+                    5 - Pesquisar produtos
+                    6 - Venda de produtos
+                    0 - Sair do programa
+                        """);
 
         return scan.nextLine();
     }
 
     public Map<String, Object> getProductInformation() {
         Map<String, Object> product = new HashMap<>();
-        System.out.println("Nome do produto? ");
+        System.out.println("Nome do produto: ");
         System.out.print("> ");
         product.put("nome", scan.nextLine());
-        System.out.println("Quantidade do produto? ");
+        System.out.println("Quantidade do produto: ");
         System.out.print("> ");
         product.put("quantidade", scan.nextLine());
-        System.out.println("Valor do produto? ");
+        System.out.println("Valor do produto: ");
         System.out.print("> ");
         product.put("valor", scan.nextLine());
 
@@ -40,22 +47,34 @@ public class ProductView {
     }
 
     public String editProduct(){
-        System.out.println("Você deseja editar qual produto? Se não deseja editar nada digite 0");
+        System.out.println("Você deseja editar qual produto? Escolha o produto pelo índice ou digite '0' para voltar ao menu.");
         listProducts();
         return answer();
     }
 
     public String removeProduct() {
-        System.out.println("Você deseja remover qual produto? Se não deseja remover nada digite 0");
+        System.out.println("Você deseja remover qual produto? Escolha o produto pelo índice ou digite '0' para voltar ao menu.");
         listProducts();
         String option = answer();
+        char teste = option.charAt(0);
+        if (Character.isAlphabetic(teste)){
+            System.out.println("Opção inválida. Digite um número.");
+            option = "0";
+
+        }
         if(option.equals("0")){
             System.out.println("Voltando para o menu. ");
         }
+
         return option;
     }
 
     public void listProducts() {
+        System.out.println("""
+-------------------------------------------------------
+xxxxxxxxxxxxxxxxxx Lista de Produtos xxxxxxxxxxxxxxxxxx
+-------------------------------------------------------
+""");
         for (int i = 0; i < Product.productsStock.size(); i++){
             Map<String, Object> product = Product.productsStock.get(i);
             String stringNameProduct = product.get("nome").toString();
@@ -67,30 +86,32 @@ public class ProductView {
             System.out.printf("%d - %s - Quantidade: %s - Valor: R$ %.2f\n",
                     (i+1), nameCapitalized , quantity , price);
         }
+        System.out.println();
     }
 
     public String searchProduct() {
-        System.out.println("Digite o nome ou parte dele: ");
-        String search = scan.nextLine().toLowerCase();
+        System.out.println("Digite o nome do produto ou parte dele: ");
 
-        return search;
+        return scan.nextLine().toLowerCase();
     }
 
     public String sellProducts() {
-        System.out.println("O que deseja comprar? ");
+        System.out.println("O que deseja comprar? Escolha o produto pelo índice. ");
         String option = answer();
-        System.out.println("Qual a quantidade");
+        System.out.println("Qual a quantidade? Digite um número.");
         option += "," + answer();
 
         return option;
     }
 
     public void listFilteredProducts(List<Map<String, Object>> products){
+        System.out.println("Lista de Produtos filtrados: ");
         for (int i = 0; i < products.size(); i++){
             Map<String, Object> product = products.get(i);
             System.out.printf("%d - %s - Quantidade: %s - Valor: R$ %s\n",
                     (i+1), product.get("nome"), product.get("quantidade"),  product.get("valor"));
         }
+        System.out.println();
     }
 
     public String insufficientStock(Map<String, Object> productInStock) {
@@ -103,7 +124,7 @@ public class ProductView {
     }
 
     public String newPurchase() {
-        System.out.println("Deseja algo mais? ");
+        System.out.println("Deseja algo mais? 's' para sim ou 'n' para não.");
         return answer();
     }
 
